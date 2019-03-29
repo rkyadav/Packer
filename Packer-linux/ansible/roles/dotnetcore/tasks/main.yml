@@ -1,0 +1,8 @@
+---
+
+- name: Install DotNet Core 2.1
+  win_chocolatey:
+    name: dotnetcore-sdk
+    state: present
+
+...

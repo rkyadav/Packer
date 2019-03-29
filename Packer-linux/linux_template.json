@@ -1,0 +1,41 @@
+{
+    "builders":[{
+      "type": "amazon-ebs",
+      "region": "us-east-1",
+      "source_ami": "ami-64a9771b",
+      "vpc_id":"vpc-fdcc8d98",
+      "subnet_id":"subnet-05399d2e",
+      "instance_type": "t2.micro",
+      "ssh_username": "ec2-user",
+      "ami_name": "packer-quick-start {{timestamp}}",
+      "tags": {
+        "OS_Version": "Linux2",
+        "Release": "Latest",
+        "Base_AMI_Name": "{{ .SourceAMIName }}",
+        "Extra": "{{ .SourceAMITags.TagName }}"
+      }
+    }],
+
+    "provisioners":[{
+      "type": "shell",
+      "inline": [
+        "sudo yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm",
+        "sudo yum -y update"
+    ]},
+    {
+      "type": "shell",
+      "script": "./scripts/pip.sh",
+      "pause_before": "3s"
+    },
+    {
+      "type": "shell",
+      "script": "./scripts/mssql17.sh",
+      "pause_before": "3s"
+    },
+    {
+    "type": "shell",
+      "inline": [
+        "sudo yum -y update"
+    ]}
+  ]
+}

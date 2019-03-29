@@ -1,0 +1,9 @@
+- sudo apt install unzip
+- wget https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip
+- unzip packer_1.2.4_linux_amd64.zip -d packer
+- sudo mv packer /usr/local/
+- sudo chmod 777 /etc/environment
+- echo PATH="$PATH:/usr/local/packer" > /etc/environment
+- source /etc/environment
+- sudo apt-get update
+

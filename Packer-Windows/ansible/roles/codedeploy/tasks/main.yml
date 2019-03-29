@@ -1,0 +1,14 @@
+---
+
+- name: "Download CodeDeploy"
+  win_get_url:
+    url: https://s3.amazonaws.com/aws-codedeploy-us-east-1/latest/codedeploy-agent.msi
+    dest: /temp/codedeploy.msi
+
+- name: Install an CodeDeploy MSI, and wait for it to complete before continuing
+  win_msi:
+    path: /temp/codedeploy.msi
+    wait: yes
+    state: present
+
+...

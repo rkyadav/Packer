@@ -1,0 +1,9 @@
+---
+- hosts: all
+
+  tasks:
+
+    - name: Add SSH public key to user remote
+      authorized_key:
+        user=ryadav
+        key="{{ lookup('file', "../files/workstation.pub") }}"

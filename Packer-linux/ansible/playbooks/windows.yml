@@ -1,0 +1,52 @@
+---
+- hosts: localhost
+  connections: localhost
+- gather_facts: false
+- tasks:
+  -
+    name: "Install IIS"
+    win_feature:
+      include_management_tools: true
+      include_sub_features: true
+      name: Web-Server
+      restart: true
+      state: present
+  -
+    name: "Install Net-Framework-Core from file"
+    win_feature:
+      name: NET-Framework-Core
+      scource: "https://www.microsoft.com/en-us/download/confirmation.aspx?id=55170"
+      state: present
+  -
+    name: "Install Microsoft SQL 2008"
+    win_feature:
+      name: "Microsoft SQL 2008"
+      source: "https://www.microsoft.com/en-us/download/confirmation.aspx?id=1695"
+      state: present
+  -
+    name: "Download CodeDeploy"
+    win_get_url:
+      dest: /temp/codedeploy.msi
+      url: "https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/codedeploy-agent.msi"
+  -
+    name: "Ensure CodeDeploy is installed"
+    win_package:
+      path: /temp/codedeploy.msi
+      state: present
+  # -
+    # name: "Run Powershell Script"
+    # tasks:
+    #   name: Powershell
+    #   script: ~
+  -
+    name: "Install All Critical and Security Updates"
+    register: update_result
+    win_updates:
+      category_names:
+        - CriticalUpdates
+        - SecurityUpdates
+      state: installed
+  -
+    name: "reboot if installing Web-Server feature requires it"
+    win_reboot:
+      when: win_feature.reboot_required

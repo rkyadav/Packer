@@ -1,0 +1,58 @@
+{
+   "builders":[
+        {
+            "type":"amazon-ebs",
+            "region":"{{user `region`}}",
+            "vpc_id":"{{user `vpc_id`}}",
+            "subnet_id":"{{user `subnet_id`}}",
+            "source_ami": "{{user `source_ami`}}",
+            "instance_type":"{{user `instance_type`}}",
+            "ami_name": "Windows-Server-2016-Core-IIS10-{{timestamp}}",
+            "user_data_file":"./ansible/scripts/user_data.txt",
+            "communicator":"winrm",
+            "winrm_username":"Administrator",
+            "tags":{
+               "Version":"{{timestamp}}",
+               "Builder":"Packer"
+            }
+         }
+     ] ,
+    "provisioners":[
+        {
+            "type":"powershell",
+            "inline":[
+               "Set-ExecutionPolicy RemoteSigned -Force",
+               "Set-TimeZone -Name Central Standard Time",
+               "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))"
+            ]
+        },
+        {
+           "type":"powershell",
+            "scripts":[
+               "./ansible/scripts/disable-uac.ps1",
+               "./ansible/scripts/install-iis10.ps1",
+               "./ansible/scripts/disable-default_web_site.ps1",
+               "./ansible/scripts/install-codedeploy.ps1",
+               "./ansible/scripts/install-features.ps1"
+            ]
+         },
+         {
+            "type": "windows-shell",
+            "inline": [
+               "choco install git.install -y",
+               "choco install urlrewrite -y",
+               "choco install 7zip.install -y",
+               "./ansible/scripts/ConfigDirectories.bat"
+            ]
+         },
+          {
+            "type":"powershell",
+            "inline":[
+               "C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\InitializeInstance.ps1 -Schedule",
+               "C:\\ProgramData\\Amazon\\EC2-Windows\\Launch\\Scripts\\SysprepInstance.ps1 -NoShutdown"
+            ]
+        }
+    ]
+}
+    
+    

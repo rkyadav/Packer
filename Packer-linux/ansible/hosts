@@ -1,0 +1,9 @@
+[windows]
+172.25.98.52
+
+[windows:vars]
+ansible_user=Administrator
+ansible_password='IusTFKxE-yV.7)Imu&ErDx?x4b)WZPC2'
+ansible_connection=winrm
+ansible_winrm_transport=basic
+ansible_winrm_server_cert_validation=ignore

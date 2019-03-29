@@ -1,0 +1,16 @@
+---
+
+- name: Packer Configuration Linux2
+  hosts: all
+  gather_facts: true
+  become: true
+  roles:
+    - linux-clean
+    - linux-epel
+    - linux-pip
+    - linux-mssql
+    - linux-codedeploy
+    - linux-updates
+  tasks:
+
+...

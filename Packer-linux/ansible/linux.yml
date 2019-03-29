@@ -1,0 +1,17 @@
+---
+
+- name: Packer Configuration Linux2
+  hosts: localhost
+  gather_facts: true
+  become: true
+  roles:
+    - linux-pip
+    - linux-mssql
+    - linux-codedeploy
+
+  tasks:
+    - name: upgrade all packages
+      yum:
+        name: "*"
+        state: latest
+  

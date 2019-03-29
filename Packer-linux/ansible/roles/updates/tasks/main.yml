@@ -1,0 +1,74 @@
+---
+
+- name: Install all security, critical, and rollup updates
+  win_updates:
+    category_names:
+      - SecurityUpdates
+      - CriticalUpdates
+      - UpdateRollups
+
+# - name: Install only security updates
+#   win_updates:
+#     category_names: SecurityUpdates
+
+# - name: Search-only, return list of found updates (if any), log to c:\ansible_wu.txt
+#   win_updates:
+#     category_names: SecurityUpdates
+#     state: searched
+#     log_path: c:\ansible_wu.txt
+
+# - name: Install all security updates with automatic reboots
+#   win_updates:
+#     category_names:
+#     - SecurityUpdates
+#     reboot: yes
+
+# - name: Install only particular updates based on the KB numbers
+#   win_updates:
+#     category_name:
+#     - SecurityUpdates
+#     whitelist:
+#     - KB4056892
+#     - KB4073117
+
+# - name: Exlude updates based on the update title
+#   win_updates:
+#     category_name:
+#     - SecurityUpdates
+#     - CriticalUpdates
+#     blacklist:
+#     - Windows Malicious Software Removal Tool for Windows
+#     - \d{4}-\d{2} Cumulative Update for Windows Server 2016
+
+# # Note async works on Windows Server 2012 or newer - become must be explicitly set on the task for this to work
+# - name: Search for Windows updates asynchronously
+#   win_updates:
+#     category_names:
+#     - SecurityUpdates
+#     state: searched
+#   async: 180
+#   poll: 10
+#   register: updates_to_install
+#   become: yes
+#   become_method: runas
+#   become_user: SYSTEM
+
+# # Async can also be run in the background in a fire and forget fashion
+# - name: Search for Windows updates asynchronously (poll and forget)
+#   win_updates:
+#     category_names:
+#     - SecurityUpdates
+#     state: searched
+#   async: 180
+#   poll: 0
+#   register: updates_to_install_async
+
+# - name: get status of Windows Update async job
+#   async_status:
+#     jid: '{{ updates_to_install_async.ansible_job_id }}'
+#   register: updates_to_install_result
+#   become: yes
+#   become_method: runas
+#   become_user: SYSTEM
+
+...

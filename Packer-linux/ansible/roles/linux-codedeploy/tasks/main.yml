@@ -1,0 +1,24 @@
+---
+- name: Include the Packages for each OS
+  include_vars: "{{ ansible_os_family }}.yml"
+  tags: install_dependencies
+
+- name: Install Dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ dependencies }}"
+  tags: install_dependencies
+
+- name: Get Instance Metadata 
+  action: ec2_facts
+
+- name: Fetch the CodeDeploy install script
+  get_url:
+    url: "https://aws-codedeploy-{{ ansible_ec2_placement_region }}.s3.amazonaws.com/latest/install"
+    dest: /tmp/codedeploy-install
+    mode: 0700
+
+- name: Install Code Deploy
+  become: true
+  command: /tmp/codedeploy-install auto

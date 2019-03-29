@@ -1,0 +1,119 @@
+---
+- name: Packer Configuration Windows Server 2016
+  hosts: all
+  gather_facts: true
+  roles:
+    - iis
+    - dotnetcore
+    - codedeploy
+    - updates
+  tasks:
+    - name: Set timezone to 'Central Standard Time' (GMT-06:00)
+      win_timezone:
+        timezone: Central Standard Time
+
+    
+    - name: Run Powershell Scripts
+      script: /scritps/{{ item }}
+      with_items:
+        - execution-policy.ps1
+        - diable-uac.ps1
+        - permissions.ps1
+        - install-features.ps1
+
+      # - name: Disable UAC
+      #   script: /scripts/diable-uac.ps1
+
+      # - name: Set Execution Policy
+      #   script: /scripts/execution-policy.ps1
+        
+      # - name: Set Permissions
+      #   script: /scripts/permissions.ps1
+      
+      # - name: Install Features
+      #   script: /scripts/install-features.ps1
+
+    - name: Config Files
+      win_command: /scripts/{{ item }}
+      with_items:
+        - ConfigDirectories.bat
+        - ConfigProxy.bat
+
+      # - name: Config Direcotries
+      #   win_command: /scripts/ConfigDirectories.bat
+
+      # - name: Config Proxies
+      #   win_command: /scripts/ConfigProxy.bat
+
+    # - name: Install IIS
+    #   win_feature:
+    #     name: Web-Server
+    #     state: present
+    #     include_sub_features: yes
+    #     include_management_tools: yes
+
+    # - name: Remove Default Web Site
+    #   win_iis_website:
+    #     name: "Default Web Site"
+    #     state: absent
+
+    # - name: Install DotNet Core 2.1
+    #   win_chocolatey:
+    #     name: dotnetcore-sdk
+    #     state: present
+
+      # - name: "Install Net-Framework-Core from file"
+      #   win_feature:
+      #     name: NET-Framework-Core
+      #     scource: "https://www.microsoft.com/en-us/download/confirmation.aspx?id=55170"
+      #     state: present
+      # - name: "Install Microsoft SQL 2008"
+      #   win_feature:
+      #     name: "Microsoft SQL 2008"
+      #     source: "https://www.microsoft.com/en-us/download/confirmation.aspx?id=1695"
+      #     state: present
+      
+    # - name: "Download CodeDeploy"
+    #   win_get_url:
+    #     url: https://s3.amazonaws.com/aws-codedeploy-us-east-1/latest/codedeploy-agent.msi
+    #     dest: /temp/codedeploy.msi
+
+    # - name: Install an CodeDeploy MSI, and wait for it to complete before continuing
+    #   win_msi:
+    #     path: /temp/codedeploy.msi
+    #     wait: yes
+    #     state: present
+
+    - name: Install git
+      win_chocolatey:
+        name: git
+        state: present
+
+
+          
+      # - name: "Ensure CodeDeploy is installed"
+      #   win_package:
+      #     path: /temp/codedeploy.msi
+      #     state: present
+    # - name: "Install All Critical and Security Updates"
+      #    register: update_result
+      #   win_updates:
+        #    category_names:
+        #     - CriticalUpdates
+          #    - SecurityUpdates
+        # state: installed
+      #-
+      # name: "reboot if installing Web-Server feature requires it"
+        #win_reboot:
+        # when: win_feature.reboot_required
+
+    # - name: Ensure IIS Web-Server and ASP.NET are installed
+    #   win_feature:
+    #     name: "{{ item }}"
+    #     state: present
+    #   with_items:
+    #     - Web-Server
+    #     - Web-Asp-Net45
+    #     - Web-AppInit
+
+...

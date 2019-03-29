@@ -1,0 +1,27 @@
+---
+
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - sudo apt install unzip
+      - wget https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip
+      - unzip packer_1.2.4_linux_amd64.zip -d packer
+      - sudo mv packer /usr/local/
+      - sudo chmod 777 /etc/environment
+      - echo PATH="$PATH:/usr/local/packer" > /etc/environment
+      - . /etc/environment
+      - sudo apt-get update
+  pre_build:
+    commands:
+      - echo Nothing here
+  build:
+    commands:
+      - packer build -var-file=win_variables.json win_template.json
+  post_build:
+    commands:
+      - echo All Done.
+
+
+...

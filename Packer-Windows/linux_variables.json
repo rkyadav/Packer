@@ -1,0 +1,8 @@
+{
+    "region": "us-east-1",
+    "source_ami": "ami-64a9771b",
+    "vpc_id":"vpc-fdcc8d98",
+    "subnet_id":"subnet-05399d2e",
+    "instance_type": "t2.small",
+    "ssh_username": "ec2-user"
+ }

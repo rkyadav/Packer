@@ -1,0 +1,6 @@
+---
+- name: Yum Clean all
+  script: ./clean.sh
+
+
+...

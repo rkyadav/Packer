@@ -1,0 +1,31 @@
+---
+
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - sudo apt install unzip
+      - wget https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip
+      - unzip packer_1.2.4_linux_amd64.zip -d packer
+      - sudo mv packer /usr/local/
+      - sudo chmod 777 /etc/environment
+      - echo PATH="$PATH:/usr/local/packer" > /etc/environment
+      - . /etc/environment
+      - sudo apt-get update
+      - sudo apt-get install -y python-pip python-dev build-essential 
+      - sudo pip install --upgrade pip 
+      - sudo pip install ansible
+      - sudo apt-get update
+  pre_build:
+    commands:
+      - echo Nothing here
+  build:
+    commands:
+      - packer build -var-file=linux_variables.json linux_template.json
+  post_build:
+    commands:
+      - echo All Done.
+
+
+...

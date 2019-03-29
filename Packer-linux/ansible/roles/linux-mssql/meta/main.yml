@@ -1,0 +1,27 @@
+---
+galaxy_info:
+  author: Robert de Bock
+  description: Provides mssql for your system.
+  license: Apache License, Version 2.0
+  min_ansible_version: 2.3
+  min_ansible_container_version: 0.2.0
+
+  platforms:
+    - name: Centos
+      version:
+        - 7
+    - name: EL
+      version:
+        - 7
+    - name: Ubuntu
+      versions:
+        - xenial
+        - artful
+
+  galaxy_tags:
+    - mssql
+    - CentOS
+    - OpenSUSE
+    - Ubuntu
+
+dependencies: []

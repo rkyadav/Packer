@@ -1,0 +1,8 @@
+---
+
+# ansible_user=Administrator
+# ansible_pass=IusTFKxE-yV.7)Imu&ErDx?x4b)WZPC2
+# ansible_port=5986
+# ansible_connection=winrm
+# ansible_winrm_transport: credssp
+# ansible_winrm_server_cert_validation: ignore
